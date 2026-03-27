@@ -36,6 +36,26 @@
   margin-left: 0.5rem;
 }
 
+.pointsBadge {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  padding: 0.2rem 0.6rem;
+  margin-left: 0.5rem;
+}
+
+.pointsPositive {
+  color: var(--green);
+  background: var(--green-glow);
+  border: 1px solid var(--green-muted);
+}
+
+.pointsPenalty {
+  color: #ffaa00;
+  background: rgba(255, 170, 0, 0.08);
+  border: 1px solid rgba(255, 170, 0, 0.25);
+}
+
 .questionTitle {
   font-family: var(--font-display);
   font-size: clamp(1.5rem, 3vw, 2.2rem);
@@ -91,6 +111,26 @@
   margin-bottom: 1.5rem;
   background: var(--dark);
   padding: 0.5rem;
+}
+
+.questionLink {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--green);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  margin-bottom: 1.5rem;
+  background: var(--green-glow);
+  padding: 0.5rem 1rem;
+  border: 1px dashed var(--green-muted);
+  transition: all 0.2s;
+}
+
+.questionLink:hover {
+  background: var(--green-muted);
+  color: var(--text-primary);
+  border-style: solid;
 }
 
 /* ── Answer section ── */

@@ -23,7 +23,7 @@ export default function QuestionDetail({ questionId, currentRound, onAnswerResul
       setAnswer('');
       setHint('');
       const res = await getCurrentSubQuestion(questionId);
-
+      console.log(res);
       if (res.data.question_completed) {
         setIsCompleted(true);
         setQuestionData({ title: res.data.title, question_id: questionId });
@@ -44,7 +44,7 @@ export default function QuestionDetail({ questionId, currentRound, onAnswerResul
   }, [fetchQuestion]);
 
   // Determine field mode based on round and step
-  const isRound3 = currentRound === 3;
+  const isRound3 = Number(currentRound) === 3;
   const isLastPart = questionData && questionData.current_step === questionData.total_steps;
   const showDualFields = isRound3 && !isLastPart && !isCompleted;
 
@@ -162,15 +162,44 @@ export default function QuestionDetail({ questionId, currentRound, onAnswerResul
     return <div className={styles.loadingState}>[ DECRYPTING QUESTION... ]</div>;
   }
 
+  const parsedTotalPoints = parseFloat(questionData?.actual_point);
+  const hasTotalPoints = isRound3 && !isNaN(parsedTotalPoints);
+
+  const parsedPenalty = parseFloat(questionData?.current_index_point);
+  const hasPenalty = isRound3 && showDualFields && !isNaN(parsedPenalty);
+
+  const parsedCurrentPoint = parseFloat(questionData?.current_index_point);
+  const hasCurrentPoint = !isRound3 && !isNaN(parsedCurrentPoint);
+
   return (
     <div className={styles.detail}>
       {/* Question header */}
       <div className={styles.questionHeader}>
         <div className={styles.questionTag}>
-          ◆ QUESTION
+          QUESTION
           {questionData?.current_step !== undefined && !isCompleted && (
             <span className={styles.stepBadge}>
               PART {questionData.current_step + 1} / {questionData.total_steps}
+            </span>
+          )}
+          {/* Penalty Badge (only while hint field exists) */}
+          {hasPenalty && (
+            <span className={`${styles.pointsBadge} ${styles.pointsPenalty}`}>
+              HINT PENALTY: -{Math.abs(parsedPenalty).toFixed(2)}
+            </span>
+          )}
+
+          {/* Total Points Badge (Round 3) */}
+          {hasTotalPoints && (
+            <span className={`${styles.pointsBadge} ${styles.pointsPositive}`}>
+              TOTAL POINTS: {parsedTotalPoints.toFixed(2)}
+            </span>
+          )}
+
+          {/* Points Badge (Rounds 1, 2, 4) */}
+          {hasCurrentPoint && (
+            <span className={`${styles.pointsBadge} ${styles.pointsPositive}`}>
+              POINTS: {parsedCurrentPoint.toFixed(2)}
             </span>
           )}
         </div>
@@ -184,18 +213,30 @@ export default function QuestionDetail({ questionId, currentRound, onAnswerResul
 
       {/* Content area */}
       <div className={styles.contentArea}>
+
         {!isCompleted && questionData?.sub_question && (
           <>
             <div className={styles.subQuestion}>
               {questionData.sub_question}
             </div>
 
-            {questionData.image && (
-              <img
-                className={styles.questionImage}
-                src={questionData.image}
-                alt="Question visual"
-              />
+            {questionData.link && (
+              currentRound === 4 ? (
+                <a
+                  href={questionData.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.questionLink}
+                >
+                  [ VIEW ATTACHED FILE / LINK ]
+                </a>
+              ) : (
+                <img
+                  className={styles.questionImage}
+                  src={questionData.link}
+                  alt="Question visual"
+                />
+              )
             )}
           </>
         )}
@@ -286,8 +327,8 @@ export default function QuestionDetail({ questionId, currentRound, onAnswerResul
             {/* Feedback */}
             {feedback && (
               <div className={`${styles.feedback} ${feedback.type === 'correct' ? styles.feedbackCorrect :
-                  feedback.type === 'incorrect' ? styles.feedbackIncorrect :
-                    styles.feedbackInfo
+                feedback.type === 'incorrect' ? styles.feedbackIncorrect :
+                  styles.feedbackInfo
                 }`}>
                 {feedback.type === 'correct' ? '✓ ' : feedback.type === 'incorrect' ? '✗ ' : 'ℹ '}
                 {feedback.message}

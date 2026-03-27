@@ -31,6 +31,12 @@ export default function Sidebar({ questions, activeQuestionId, onSelectQuestion,
           questions.map((q, idx) => {
             const isActive = q.question_id === activeQuestionId;
             const isSolved = q.solved; // will be tracked locally
+            
+            const formatPoints = (pts) => {
+              const num = parseFloat(pts);
+              if (isNaN(num)) return pts;
+              return Number.isInteger(num) ? num : num.toFixed(2);
+            };
             return (
               <button
                 key={q.question_id}
@@ -49,7 +55,9 @@ export default function Sidebar({ questions, activeQuestionId, onSelectQuestion,
                 {isSolved ? (
                   <span className={styles.solvedTag}>SOLVED</span>
                 ) : (
-                  <span className={styles.qPoints}>{q.total_points} pts</span>
+                  Number(currentRound) !== 3 && (
+                    <span className={styles.qPoints}>{formatPoints(q.total_points)} pts</span>
+                  )
                 )}
               </button>
             );
