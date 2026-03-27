@@ -1,0 +1,184 @@
+# CYBERSEC EVENT - USER API DOCUMENTATION
+
+Base URL: (Your deployed domain)
+Authentication: All endpoints marked as "PRIVATE" require a Bearer token in the Authorization header.
+Format: `Authorization: Bearer <your_jwt_token>`
+
+==================================================
+1. AUTHENTICATION
+==================================================
+
+## Sign Up (POST /api/auth/signup)
+Description: Registers a new user. Initializes their round to 1 and fetches the current question count.
+Access: PUBLIC
+
+[Request Body] (JSON)
+{
+  "username": "johndoe",
+  "email": "johndoe@example.com",
+  "password": "securepassword123"
+}
+
+[Response] - 201 Created
+{
+  "message": "User created successfully",
+  "token": "eyJhbGciOiJ...",
+  "user": {
+    "id": "64abcdef1234567890",
+    "username": "johndoe",
+    "email": "johndoe@example.com"
+  }
+}
+
+--------------------------------------------------
+
+## Login (POST /api/auth/login)
+Description: Authenticates an existing user and returns a JWT token.
+Access: PUBLIC
+
+[Request Body] (JSON)
+{
+  "email": "johndoe@example.com",
+  "password": "securepassword123"
+}
+
+[Response] - 200 OK
+{
+  "message": "Login successful",
+  "token": "eyJhbGciOiJ...",
+  "user": {
+    "id": "64abcdef1234567890",
+    "username": "johndoe",
+    "email": "johndoe@example.com"
+  }
+}
+
+--------------------------------------------------
+
+## Logout (POST /api/auth/logout)
+Description: Returns a successful logout message (Frontend handles token removal).
+Access: PUBLIC
+
+[Request Body]
+Empty
+
+[Response] - 200 OK
+{
+  "message": "Logout successful. Please remove token from client."
+}
+
+
+==================================================
+2. QUESTIONS (Gameplay)
+==================================================
+
+## Get Round Summary (GET /api/questions/round)
+Description: Retrieves a summary list of all questions available for the user's CURRENT round.
+Access: PRIVATE
+
+[Response] - 200 OK
+{
+  "current_round": 1,
+  "questions_remaining": 5,
+  "questions": [
+    {
+      "question_id": "60a123bc...",
+      "title": "SQL Injection Basics",
+      "round": 1,
+      "total_points": 100,
+      "sub_question_count": 3
+    },
+    ...
+  ]
+}
+
+--------------------------------------------------
+
+## Get Current Sub-Question (GET /api/questions/:questionId/current)
+Description: Starts a question or fetches the active sub-question the user is currently on.
+Access: PRIVATE
+
+[Response - Ongoing] - 200 OK
+{
+  "question_id": "60a123bc...",
+  "title": "SQL Injection Basics",
+  "round": 1,
+  "sub_question": "What is the primary SQL keyword used to retrieve data?",
+  "current_step": 1,
+  "total_steps": 3
+}
+
+[Response - Finished] - 200 OK (If user has already completed this question)
+{
+  "message": "Question completed",
+  "question_completed": true,
+  "title": "SQL Injection Basics"
+}
+
+
+==================================================
+3. SUBMISSIONS
+==================================================
+
+## Submit Answer (POST /api/submissions/submit)
+Description: Validates the submitted answer for the active sub-question. It supports step-by-step answering or directly answering the final leap (for round 2 and 3).
+Access: PRIVATE
+
+[Request Body] (JSON)
+{
+  "questionId": "60a123bc...",
+  "answer": "SELECT"   // Use for regular step-by-step answering
+}
+
+-- OR -- (For skipping to the end in valid rounds)
+{
+  "questionId": "60a123bc...",
+  "final_answer": "ultimatesecretflag{123}" 
+}
+
+[Response - Correct & Moving to next step] - 200 OK
+{
+  "correct": true,
+  "message": "Correct! Moving to next step.",
+  "question_completed": false,
+  "next_step": 1
+}
+
+[Response - Correct & Finished the entirely question] - 200 OK
+{
+  "correct": true,
+  "message": "Excellent! Entire question completed.",
+  "question_completed": true,
+  "next_step": 3
+}
+
+[Response - Incorrect] - 200 OK
+{
+  "correct": false,
+  "message": "Incorrect answer. Try again!"
+}
+
+[Response - Error / Already completed] - 400 Bad Request
+{
+  "message": "Question already completed."
+}
+
+
+==================================================
+4. USER PROFILE (Utility)
+==================================================
+
+## Get User Profile (GET /api/users/:id)
+Description: Fetch details of a specific user.
+Access: PUBLIC (Used for fetching current round/stats for display)
+
+[Response] - 200 OK
+{
+  "_id": "64abcdef1234567890",
+  "username": "johndoe",
+  "email": "johndoe@example.com",
+  "current_round": 1,
+  "no_of_questions": 5,
+  "createdAt": "2024-03-27T...",
+  "updatedAt": "2024-03-27T..."
+}

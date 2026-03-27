@@ -1,0 +1,312 @@
+.detail {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 2.5rem;
+  animation: fadeInUp 0.4s ease both;
+  position: relative;
+}
+
+/* ── Question header ── */
+.questionHeader {
+  margin-bottom: 2rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--dark-border);
+}
+
+.questionTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--green);
+  letter-spacing: 0.12em;
+  margin-bottom: 0.75rem;
+}
+
+.stepBadge {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.08em;
+  background: var(--grey-accent);
+  border: 1px solid var(--grey-border);
+  padding: 0.2rem 0.6rem;
+  margin-left: 0.5rem;
+}
+
+.questionTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+.titleAccent {
+  color: var(--green);
+  text-shadow: 0 0 20px var(--green-glow-strong);
+}
+
+.completedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--green);
+  letter-spacing: 0.1em;
+  background: var(--green-glow);
+  border: 1px solid var(--green-muted);
+  padding: 0.3rem 0.8rem;
+  margin-top: 0.5rem;
+}
+
+/* ── Content area ── */
+.contentArea {
+  flex: 1;
+  position: relative;
+}
+
+.subQuestion {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  background: var(--dark-card);
+  border: 1px solid var(--dark-border);
+  border-left: 2px solid var(--green-dim);
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+}
+
+.questionImage {
+  max-width: 100%;
+  max-height: 350px;
+  object-fit: contain;
+  border: 1px solid var(--dark-border);
+  margin-bottom: 1.5rem;
+  background: var(--dark);
+  padding: 0.5rem;
+}
+
+/* ── Answer section ── */
+.answerSection {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--dark-border);
+}
+
+.answerForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.fieldRow {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.fieldGroup {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.labelPrefix {
+  color: var(--green);
+}
+
+.labelHint {
+  color: #ffaa00;
+}
+
+.input {
+  background: rgba(5, 15, 8, 0.9);
+  border: 1px solid var(--dark-border);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  padding: 0.75rem 1rem;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.18s, box-shadow 0.18s;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+}
+
+.input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+.input:focus {
+  border-color: var(--green-dim);
+  box-shadow: 0 0 0 1px var(--green-muted), inset 0 0 8px rgba(0, 255, 106, 0.04);
+}
+
+.inputDisabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.inputHint {
+  border-color: rgba(255, 170, 0, 0.3);
+}
+
+.inputHint:focus {
+  border-color: #ffaa00;
+  box-shadow: 0 0 0 1px rgba(255, 170, 0, 0.2), inset 0 0 8px rgba(255, 170, 0, 0.04);
+}
+
+.btnRow {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.submitBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  color: var(--black);
+  background: var(--green);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.18s;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  text-transform: uppercase;
+}
+
+.submitBtn:hover:not(:disabled) {
+  background: #00e85e;
+  box-shadow: 0 0 24px var(--green-glow-strong);
+  transform: translateY(-1px);
+}
+
+.submitBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.hintBtn {
+  background: #ffaa00;
+  color: #1a1100;
+}
+
+.hintBtn:hover:not(:disabled) {
+  background: #ffbb33;
+  box-shadow: 0 0 24px rgba(255, 170, 0, 0.35);
+}
+
+.spinner {
+  width: 12px;
+  height: 12px;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  border-top-color: var(--black);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+/* ── Feedback messages ── */
+.feedback {
+  margin-top: 0.75rem;
+  padding: 0.65rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  animation: fadeInUp 0.3s ease;
+}
+
+.feedbackCorrect {
+  background: var(--green-glow);
+  border: 1px solid var(--green-muted);
+  color: var(--green);
+}
+
+.feedbackIncorrect {
+  background: var(--red-muted);
+  border: 1px solid rgba(255, 60, 60, 0.25);
+  color: var(--red);
+}
+
+.feedbackInfo {
+  background: var(--grey-accent);
+  border: 1px solid var(--grey-border);
+  color: var(--text-secondary);
+}
+
+/* ── Loading state ── */
+.loadingState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  animation: pulse-green 1.5s ease infinite;
+}
+
+/* ── Part transition overlay ── */
+.partTransitionOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(2, 11, 6, 0.95);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  animation: fadeInUp 0.3s ease;
+}
+
+.partTransitionText {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--green);
+  text-shadow: 0 0 30px var(--green-glow-strong);
+  letter-spacing: 0.1em;
+  animation: glitch 1s ease-in-out;
+}
+
+.partTransitionSub {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.15em;
+  margin-top: 0.75rem;
+}
+
+@media (max-width: 768px) {
+  .detail {
+    padding: 1.5rem 1.25rem;
+  }
+  .fieldRow {
+    flex-direction: column;
+  }
+  .btnRow {
+    flex-direction: column;
+  }
+}

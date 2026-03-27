@@ -1,0 +1,151 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ── Top Bar ── */
+.topBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  height: 60px;
+  background: rgba(2, 11, 6, 0.94);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--dark-border);
+}
+
+.topLeft {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
+.logoAccent {
+  color: var(--green);
+  text-shadow: 0 0 18px var(--green-glow-strong);
+}
+
+.roundBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--green);
+  letter-spacing: 0.08em;
+  border: 1px solid var(--green-muted);
+  padding: 0.25rem 0.7rem;
+  background: var(--green-glow);
+}
+
+.roundDot {
+  width: 5px;
+  height: 5px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: blink 1.2s ease-in-out infinite;
+}
+
+.topRight {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navBtn {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: color 0.18s;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.4rem 0.8rem;
+}
+
+.navBtn:hover {
+  color: var(--green);
+}
+
+.navBtnActive {
+  color: var(--green);
+  border-bottom: 1px solid var(--green);
+}
+
+.username {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+}
+
+.logoutBtn {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  color: var(--red);
+  background: var(--red-muted);
+  border: 1px solid rgba(255, 60, 60, 0.25);
+  padding: 0.3rem 0.8rem;
+  cursor: pointer;
+  transition: all 0.18s;
+  text-transform: uppercase;
+}
+
+.logoutBtn:hover {
+  background: rgba(255, 60, 60, 0.2);
+  border-color: var(--red);
+}
+
+/* ── Main area ── */
+.mainArea {
+  display: flex;
+  margin-top: 60px;
+  flex: 1;
+  min-height: calc(100vh - 60px);
+}
+
+/* ── Content wrap (everything except sidebar) ── */
+.contentWrap {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 768px) {
+  .topBar {
+    padding: 0 1rem;
+    height: 52px;
+  }
+  .mainArea {
+    flex-direction: column;
+    margin-top: 52px;
+  }
+  .username {
+    display: none;
+  }
+  .logo {
+    font-size: 0.95rem;
+  }
+}
