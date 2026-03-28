@@ -7,6 +7,8 @@ import QuestionDetail from '../components/QuestionDetail';
 import RoundTransition from '../components/RoundTransition';
 import styles from './DashboardPage.module.css';
 
+const FINAL_ROUND = 5;
+
 export default function DashboardPage() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -19,11 +21,24 @@ export default function DashboardPage() {
   // Round transition animation state
   const [showRoundTransition, setShowRoundTransition] = useState(false);
   const [transitionRound, setTransitionRound] = useState(null);
+  const [isGameOver, setIsGameOver] = useState(false);
 
   const fetchRound = useCallback(async () => {
     try {
       setLoading(true);
       const res = await getRoundSummary();
+      const nextRound = res.data.current_round;
+
+      if (nextRound >= FINAL_ROUND) {
+        setCurrentRound(nextRound);
+        setQuestions(res.data.questions || []);
+        setActiveQuestionId(null);
+        setTransitionRound(nextRound);
+        setIsGameOver(true);
+        setShowRoundTransition(true);
+        return;
+      }
+
       setCurrentRound(res.data.current_round);
       setQuestions(res.data.questions || []);
       // Select first question if none active
@@ -46,11 +61,20 @@ export default function DashboardPage() {
     if (result.current_round !== undefined && result.current_round !== currentRound) {
       // Round changed! Show transition
       setTransitionRound(result.current_round);
+      if (result.current_round >= FINAL_ROUND) {
+        setIsGameOver(true);
+      }
       setShowRoundTransition(true);
     }
   };
 
   const handleRoundTransitionEnd = () => {
+    if (transitionRound >= FINAL_ROUND || isGameOver) {
+      setCurrentRound(transitionRound);
+      setActiveQuestionId(null);
+      return;
+    }
+
     setShowRoundTransition(false);
     setCurrentRound(transitionRound);
     setActiveQuestionId(null);
@@ -81,9 +105,6 @@ export default function DashboardPage() {
         <div className={styles.topRight}>
           <Link to="/dashboard" className={`${styles.navBtn} ${styles.navBtnActive}`}>
             QUESTIONS
-          </Link>
-          <Link to="/leaderboard" className={styles.navBtn}>
-            LEADERBOARD
           </Link>
           <span className={styles.username}>
             {user?.username || 'AGENT'}
@@ -127,6 +148,7 @@ export default function DashboardPage() {
             <RoundTransition
               round={transitionRound}
               onComplete={handleRoundTransitionEnd}
+              isGameOver={isGameOver}
             />
           )}
         </div>
